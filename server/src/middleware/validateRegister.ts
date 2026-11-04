@@ -1,13 +1,13 @@
 import type { NextFunction, Request, Response } from "express";
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_NAME_LENGTH = 50;
-const MAX_EMAIL_LENGTH = 255;
-const MIN_PASSWORD_LENGTH = 4;
+export const MAX_EMAIL_LENGTH = 255;
+export const MIN_PASSWORD_LENGTH = 4;
 
-const MAX_PASSWORD_BYTES = 72;
+export const MAX_PASSWORD_BYTES = 72;
 
-const asTrimmed = (value: unknown) => (typeof value === "string" ? value.trim() : "");
+export const asTrimmed = (value: unknown) => (typeof value === "string" ? value.trim() : "");
 
 export const validateRegister = (req: Request, res: Response, next: NextFunction) => {
   const body = req.body ?? {};

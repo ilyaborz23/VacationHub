@@ -5,6 +5,8 @@ import { signToken } from "../utils/jwt";
 import type { User } from "../types/User";
 
 const SALT_ROUNDS = 10;
+// Compared when the email is unknown, so both failed login cases take the same time
+const DUMMY_HASH = bcrypt.hashSync("no-such-user", SALT_ROUNDS);
 
 //register
 export const register = async (req: Request, res: Response) => {
@@ -24,5 +26,26 @@ export const register = async (req: Request, res: Response) => {
     res.status(201).json({ token: signToken(user), user });
   } catch (error) {
     res.status(500).json({ error: "Failed to register" });
+  }
+};
+
+//login
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const [row] = (await sql`
+      SELECT user_id, first_name, last_name, email, role, password
+      FROM users
+      WHERE email = ${email}
+    `) as (User & { password: string })[];
+    const passwordMatches = await bcrypt.compare(password, row?.password ?? DUMMY_HASH);
+    if (!row || !passwordMatches) {
+      res.status(401).json({ error: "Incorrect email or password" });
+      return;
+    }
+    const { password: _password, ...user } = row;
+    res.json({ token: signToken(user), user });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to log in" });
   }
 };
