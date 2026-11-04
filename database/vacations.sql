@@ -18,6 +18,12 @@ CREATE TABLE IF NOT EXISTS vacations (
   CHECK (end_date >= start_date)
 );
 
+CREATE TABLE IF NOT EXISTS likes (
+  user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+  vacation_id INTEGER NOT NULL REFERENCES vacations(vacation_id) ON DELETE CASCADE,
+  PRIMARY KEY (user_id, vacation_id)
+);
+
 INSERT INTO vacations (destination, description, start_date, end_date, price, image_file_name)
 SELECT * FROM (VALUES
   ('Paris, France', 'Stroll along the Seine, visit the Louvre and the Eiffel Tower, and enjoy the cafes of Montmartre.', DATE '2027-04-12', DATE '2027-04-18', 1450.00, 'paris.jpg'),

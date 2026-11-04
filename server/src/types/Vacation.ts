@@ -6,4 +6,6 @@ export type Vacation = {
   end_date: string;
   price: number;
   image_file_name: string;
+  likes_count: number;
+  is_liked: boolean;
 };
