@@ -4,6 +4,7 @@ import {
   deleteVacation,
   getVacations,
   getVacationById,
+  getVacationsCsv,
   getVacationsReport,
   likeVacation,
   unlikeVacation,
@@ -18,6 +19,7 @@ const router = express.Router();
 
 router.get("/", verifyToken, getVacations);
 router.get("/report", verifyToken, requireRole("admin"), getVacationsReport);
+router.get("/report/csv", verifyToken, requireRole("admin"), getVacationsCsv);
 router.get("/:id", verifyToken, getVacationById);
 router.post("/", verifyToken, requireRole("admin"), uploadImage, validateNewVacation, addVacation);
 router.put("/:id", verifyToken, requireRole("admin"), uploadImage, validateVacationUpdate, updateVacation);

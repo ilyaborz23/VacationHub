@@ -144,19 +144,43 @@ export const unlikeVacation = async (req: Request, res: Response) => {
   }
 };
 
+const fetchLikesReport = () => sql`
+  SELECT v.destination, COUNT(l.user_id)::int AS likes_count
+  FROM vacations v
+  LEFT JOIN likes l ON l.vacation_id = v.vacation_id
+  GROUP BY v.vacation_id, v.destination
+  ORDER BY likes_count DESC, v.destination
+`;
+
+const toCsvValue = (value: string | number) => {
+  let text = String(value);
+  // Excel would run a value starting with these characters as a formula
+  if (/^[=+\-@\t\r]/.test(text)) {
+    text = `'${text}`;
+  }
+  return `"${text.replace(/"/g, '""')}"`;
+};
+
 //getVacationsReport
 export const getVacationsReport = async (req: Request, res: Response) => {
   try {
-    const report = await sql`
-      SELECT v.destination, COUNT(l.user_id)::int AS likes_count
-      FROM vacations v
-      LEFT JOIN likes l ON l.vacation_id = v.vacation_id
-      GROUP BY v.vacation_id, v.destination
-      ORDER BY likes_count DESC, v.destination
-    `;
-    res.json(report);
+    res.json(await fetchLikesReport());
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch report" });
+  }
+};
+
+//getVacationsCsv
+export const getVacationsCsv = async (req: Request, res: Response) => {
+  try {
+    const report = await fetchLikesReport();
+    const rows = report.map((row) => `${toCsvValue(row.destination)},${toCsvValue(row.likes_count)}`);
+    const csv = ["Destination,Likes", ...rows].join("\r\n");
+    res.type("text/csv; charset=utf-8");
+    res.attachment("vacations-likes.csv");
+    res.send(`﻿${csv}`);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create CSV file" });
   }
 };
 
