@@ -41,6 +41,7 @@ VacationHub/
 ├── server/                   # Express API
 │   ├── images/               # Vacation images
 │   ├── .env.example
+│   ├── VacationHub.postman_collection.json
 │   └── src/
 │       ├── app.ts            # Express app and startup
 │       ├── db/connect.ts     # Neon connection
@@ -138,6 +139,8 @@ Routes marked **User** or **Admin** need the header `Authorization: Bearer <toke
 Images are served from `http://localhost:3000/images/<file name>`.
 
 Error responses have the form `{ "error": "..." }`.
+
+All routes are in the Postman collection [`server/VacationHub.postman_collection.json`](server/VacationHub.postman_collection.json). Import it into Postman, set `adminEmail` and `adminPassword`, and run the folders from top to bottom.
 
 ## MCP server
 
