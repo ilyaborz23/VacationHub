@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { sql } from "../db/connect";
 import type { Vacation } from "../types/Vacation";
+import { removeImage, saveImage } from "../utils/images";
 
 const PAGE_SIZE = 9;
 const MAX_INTEGER = 2147483647;
@@ -140,5 +141,101 @@ export const unlikeVacation = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({ error: "Failed to unlike vacation" });
+  }
+};
+
+//getVacationsReport
+export const getVacationsReport = async (req: Request, res: Response) => {
+  try {
+    const report = await sql`
+      SELECT v.destination, COUNT(l.user_id)::int AS likes_count
+      FROM vacations v
+      LEFT JOIN likes l ON l.vacation_id = v.vacation_id
+      GROUP BY v.vacation_id, v.destination
+      ORDER BY likes_count DESC, v.destination
+    `;
+    res.json(report);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch report" });
+  }
+};
+
+//addVacation
+export const addVacation = async (req: Request, res: Response) => {
+  const { destination, description, start_date, end_date, price } = req.body;
+  let newImage: string | undefined;
+  try {
+    newImage = await saveImage(req.file!.buffer);
+    const [created] = await sql`
+      INSERT INTO vacations (destination, description, start_date, end_date, price, image_file_name)
+      VALUES (${destination}, ${description}, ${start_date}, ${end_date}, ${price}, ${newImage})
+      RETURNING vacation_id
+    `;
+    newImage = undefined;
+    res.status(201).json(await findVacation(created!.vacation_id, res.locals.user.userId));
+  } catch (error) {
+    if (newImage) await removeImage(newImage);
+    res.status(500).json({ error: "Failed to add vacation" });
+  }
+};
+
+//updateVacation
+export const updateVacation = async (req: Request, res: Response) => {
+  const id = parsePositiveInteger(req.params.id);
+  if (id === null) {
+    res.status(400).json({ error: "Invalid vacation id" });
+    return;
+  }
+  const { destination, description, start_date, end_date, price } = req.body;
+  let newImage: string | undefined;
+  try {
+    const [existing] = await sql`SELECT image_file_name FROM vacations WHERE vacation_id = ${id}`;
+    if (!existing) {
+      res.status(404).json({ error: "Vacation not found" });
+      return;
+    }
+    if (req.file) {
+      newImage = await saveImage(req.file.buffer);
+    }
+    const updated = await sql`
+      UPDATE vacations
+      SET destination = ${destination}, description = ${description}, start_date = ${start_date},
+        end_date = ${end_date}, price = ${price}, image_file_name = ${newImage ?? existing.image_file_name}
+      WHERE vacation_id = ${id}
+      RETURNING vacation_id
+    `;
+    if (updated.length === 0) {
+      if (newImage) await removeImage(newImage);
+      res.status(404).json({ error: "Vacation not found" });
+      return;
+    }
+    if (newImage) {
+      newImage = undefined;
+      await removeImage(existing.image_file_name);
+    }
+    res.json(await findVacation(id, res.locals.user.userId));
+  } catch (error) {
+    if (newImage) await removeImage(newImage);
+    res.status(500).json({ error: "Failed to update vacation" });
+  }
+};
+
+//deleteVacation
+export const deleteVacation = async (req: Request, res: Response) => {
+  const id = parsePositiveInteger(req.params.id);
+  if (id === null) {
+    res.status(400).json({ error: "Invalid vacation id" });
+    return;
+  }
+  try {
+    const [deleted] = await sql`DELETE FROM vacations WHERE vacation_id = ${id} RETURNING image_file_name`;
+    if (!deleted) {
+      res.status(404).json({ error: "Vacation not found" });
+    } else {
+      await removeImage(deleted.image_file_name);
+      res.json({ message: "Vacation deleted successfully" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete vacation" });
   }
 };

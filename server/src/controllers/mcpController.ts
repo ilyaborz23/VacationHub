@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import { mcpToTool } from "@google/genai";
 import { getMcpClient } from "../mcp/client";
+import { todayInIsrael } from "../utils/date";
 import { generateText } from "../utils/gemini";
 
 const buildSystemInstruction = () => {
-  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jerusalem" }).format(new Date());
-  return `You answer questions about the data of a vacation website. Today is ${today}.
+  return `You answer questions about the data of a vacation website. Today is ${todayInIsrael()}.
 Always use the available tools to get the data and base the answer only on their results.
 Write a short plain text answer without Markdown, in the same language as the question.
 Keep destination names as they appear in the data.
