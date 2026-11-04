@@ -4,8 +4,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { register } from '../api'
 import type { RegisterData } from '../api'
 import { useAuth } from '../auth/AuthContext'
+import AuthLayout from '../components/AuthLayout'
 import Field from '../components/Field'
-import { alert, authPanel, button, form, input, pageTitle } from '../styles'
+import { alert, button, form, input } from '../styles'
 import { validateEmail, validatePassword } from '../utils/format'
 
 type Errors = Partial<Record<keyof RegisterData, string>>
@@ -59,9 +60,10 @@ export default function RegisterPage() {
   })
 
   return (
-    <section className={authPanel}>
-      <h1 className={pageTitle}>Create your account</h1>
-      <p className="mt-1 text-muted">Save the vacations you love and get trip advice.</p>
+    <AuthLayout
+      title="Create your account"
+      intro="Save the vacations you love and get trip advice."
+    >
       <form className={form} onSubmit={submit} noValidate>
         <Field id="first_name" label="First name" error={errors.first_name}>
           <input id="first_name" className={input} dir="auto" autoComplete="given-name" maxLength={50} value={values.first_name} onChange={(e) => update('first_name', e.target.value)} {...describe('first_name')} />
@@ -78,7 +80,7 @@ export default function RegisterPage() {
         {formError && <p className={`${alert} mb-0`} role="alert">{formError}</p>}
         <button type="submit" className={`${button} w-full`} disabled={saving}>{saving ? 'Creating account…' : 'Sign up'}</button>
       </form>
-      <p className="mt-4 text-center">Already registered? <Link to="/login" className="inline-block py-2.5 font-medium text-primary underline">Log in</Link></p>
-    </section>
+      <p className="mt-4 text-center">Already registered? <Link to="/login" className="inline-block py-2.5 font-bold text-primary underline hover:text-primary-hover">Log in</Link></p>
+    </AuthLayout>
   )
 }

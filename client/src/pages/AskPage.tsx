@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { askQuestion } from '../api'
 import Field from '../components/Field'
-import { alert, answer as answerStyle, button, chip, formPage, formWide, input, pageTitle } from '../styles'
+import { alert, answer as answerStyle, button, exampleChip, formPage, formWide, input, pageTitle } from '../styles'
 
 const MAX_LENGTH = 500
 const EXAMPLES = [
@@ -39,7 +39,7 @@ export default function AskPage() {
   return (
     <section className={formPage}>
       <h1 className={pageTitle}>Ask the data</h1>
-      <p className="mt-1 text-muted">Ask anything about the vacations in the database. The answer comes through the MCP server.</p>
+      <p className="mt-3 text-muted">Ask anything about the vacations in the database. The answer comes through the MCP server.</p>
       <form className={formWide} onSubmit={submit} noValidate>
         <Field id="question" label="Your question" error={inputError}>
           <textarea
@@ -62,7 +62,7 @@ export default function AskPage() {
             <button
               key={example}
               type="button"
-              className={chip}
+              className={exampleChip}
               dir="auto"
               onClick={() => {
                 setQuestion(example)

@@ -79,15 +79,15 @@ export default function AdminPage() {
               key={vacation.vacation_id}
               vacation={vacation}
               badge={
-                <span className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-white px-3.5 font-semibold text-muted shadow-md" aria-label={`${vacation.likes_count} likes`}>
+                <span className="-mt-2 inline-flex min-h-11 flex-none items-center gap-1.5 font-bold text-muted" aria-label={`${vacation.likes_count} likes`}>
                   <HeartIcon filled={false} />
                   <span>{vacation.likes_count}</span>
                 </span>
               }
               footer={
-                <div className="flex gap-2">
-                  <Link to={`/admin/edit/${vacation.vacation_id}`} className={`${buttonSecondary} px-3.5`} aria-label={`Edit ${vacation.destination}`}>Edit</Link>
-                  <button type="button" className={`${buttonDangerOutline} px-3.5`} aria-label={`Delete ${vacation.destination}`} onClick={() => setToDelete(vacation)}>Delete</button>
+                <div className="mt-2 flex gap-2">
+                  <Link to={`/admin/edit/${vacation.vacation_id}`} className={buttonSecondary} aria-label={`Edit ${vacation.destination}`}>Edit</Link>
+                  <button type="button" className={buttonDangerOutline} aria-label={`Delete ${vacation.destination}`} onClick={() => setToDelete(vacation)}>Delete</button>
                 </div>
               }
             />

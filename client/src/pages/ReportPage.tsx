@@ -67,8 +67,13 @@ export default function ReportPage() {
                 <YAxis allowDecimals={false} domain={[0, (max: number) => Math.max(max, 1)]} tick={{ fill: 'var(--color-ink)', fontSize: 13 }}>
                   <Label value="Likes" angle={-90} position="insideLeft" fill="var(--color-muted)" />
                 </YAxis>
-                <Tooltip cursor={{ fill: 'var(--color-tint)' }} />
-                <Bar dataKey="likes_count" name="Likes" fill="var(--color-primary)" radius={[6, 6, 0, 0]} maxBarSize={56} isAnimationActive={false} />
+                <Tooltip
+                  cursor={{ fill: 'var(--color-tint)' }}
+                  contentStyle={{ background: 'var(--color-surface)', border: '1px solid var(--color-line)', borderRadius: 4 }}
+                  labelStyle={{ color: 'var(--color-ink)' }}
+                  itemStyle={{ color: 'var(--color-primary)' }}
+                />
+                <Bar dataKey="likes_count" name="Likes" fill="var(--color-primary)" radius={[2, 2, 0, 0]} maxBarSize={56} isAnimationActive={false} />
               </BarChart>
             </ResponsiveContainer>
           </div>

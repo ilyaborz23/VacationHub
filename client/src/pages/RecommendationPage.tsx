@@ -34,7 +34,7 @@ export default function RecommendationPage() {
   return (
     <section className={formPage}>
       <h1 className={pageTitle}>AI trip advice</h1>
-      <p className="mt-1 text-muted">Enter a destination and get a trip recommendation.</p>
+      <p className="mt-3 text-muted">Enter a destination and get a trip recommendation.</p>
       <form className={formWide} onSubmit={submit} noValidate>
         <Field id="destination" label="Destination" error={inputError}>
           <input

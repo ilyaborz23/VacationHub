@@ -4,8 +4,8 @@ type PaginationProps = {
   onChange: (page: number) => void
 }
 
-const pageButton = 'min-h-11 min-w-11 rounded-[10px] border border-line bg-surface font-medium transition-colors not-disabled:hover:bg-tint disabled:opacity-45'
-const currentPageButton = 'min-h-11 min-w-11 rounded-[10px] border border-primary bg-primary font-medium text-white'
+const pageButton = 'min-h-11 min-w-11 rounded border border-input-line bg-surface transition-colors not-disabled:hover:bg-tint disabled:opacity-45'
+const currentPageButton = 'min-h-11 min-w-11 rounded border border-primary bg-primary font-bold text-white'
 
 function visiblePages(page: number, totalPages: number) {
   const pages = new Set([1, totalPages, page - 1, page, page + 1])
@@ -17,7 +17,7 @@ export default function Pagination({ page, totalPages, onChange }: PaginationPro
   const pages = visiblePages(page, totalPages)
 
   return (
-    <nav className="mt-7 flex flex-wrap items-center justify-center gap-1.5" aria-label="Pagination">
+    <nav className="mt-8 flex flex-wrap items-center justify-center gap-1.5" aria-label="Pagination">
       <button type="button" className={pageButton} aria-label="Previous page" disabled={page <= 1} onClick={() => onChange(page - 1)}>
         ‹
       </button>

@@ -4,10 +4,10 @@ import { getVacations, likeVacation, unlikeVacation } from '../api'
 import { HeartIcon } from '../components/Icons'
 import Pagination from '../components/Pagination'
 import VacationCard from '../components/VacationCard'
-import { alert, buttonSecondary, cardGrid, chip, chipActive, empty, pageHead, pageTitle } from '../styles'
+import { alert, buttonSecondary, cardGrid, chip, chipActive, empty, pageTitle } from '../styles'
 import type { Vacation, VacationFilter, VacationsPage as VacationsData } from '../types'
 
-const likeButton = 'inline-flex min-h-11 items-center gap-1.5 rounded-full px-3.5 font-semibold shadow-md transition-colors hover:bg-like-tint hover:text-like disabled:opacity-70'
+const likeButton = '-me-2 -mt-2 inline-flex min-h-11 min-w-11 flex-none items-center justify-center gap-1.5 rounded px-2 font-bold transition-colors hover:bg-tint disabled:opacity-70'
 
 const FILTERS: { value: VacationFilter; label: string; empty: string }[] = [
   { value: 'all', label: 'All', empty: 'There are no vacations yet.' },
@@ -82,12 +82,12 @@ export default function VacationsPage() {
 
   return (
     <section>
-      <div className={pageHead}>
-        <h1 className={pageTitle}>Vacations</h1>
-        {data && <p className="text-muted" aria-live="polite">{data.totalCount} {data.totalCount === 1 ? 'vacation' : 'vacations'}</p>}
-      </div>
+      <h1 className={pageTitle}>Vacations</h1>
+      <p className="mt-1 mb-5 min-h-6 text-muted" aria-live="polite">
+        {data && `${data.totalCount} ${data.totalCount === 1 ? 'vacation' : 'vacations'}, sorted by start date`}
+      </p>
 
-      <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label="Filter vacations">
+      <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filter vacations">
         {FILTERS.map((f) => (
           <button
             key={f.value}
@@ -120,7 +120,7 @@ export default function VacationsPage() {
               badge={
                 <button
                   type="button"
-                  className={`${likeButton} ${vacation.is_liked ? 'bg-like-tint text-like' : 'bg-white text-muted'}`}
+                  className={`${likeButton} ${vacation.is_liked ? 'text-danger' : 'text-muted'}`}
                   aria-pressed={vacation.is_liked}
                   aria-label={`${vacation.is_liked ? 'Remove like from' : 'Like'} ${vacation.destination}, ${vacation.likes_count} likes`}
                   disabled={pendingLike === vacation.vacation_id}

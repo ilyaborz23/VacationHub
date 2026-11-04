@@ -20,14 +20,14 @@ export default function ConfirmDialog({ title, message, confirmLabel, busy, onCo
   return (
     <dialog
       ref={ref}
-      className="m-auto w-[min(440px,calc(100vw-32px))] rounded-2xl p-6 text-ink shadow-2xl backdrop:bg-sky-950/55"
+      className="m-auto w-[min(460px,calc(100vw-32px))] rounded-md bg-surface p-6 text-ink shadow-xl backdrop:bg-black/50"
       aria-labelledby="dialog-title"
       onCancel={(event) => {
         event.preventDefault()
         if (!busy) onCancel()
       }}
     >
-      <h2 id="dialog-title" className="text-xl font-bold">{title}</h2>
+      <h2 id="dialog-title" className="text-xl font-black">{title}</h2>
       <p className="mt-2 wrap-anywhere text-muted">{message}</p>
       <div className="mt-5 flex flex-wrap justify-end gap-2.5">
         <button type="button" className={buttonSecondary} autoFocus disabled={busy} onClick={onCancel}>

@@ -144,7 +144,7 @@ export default function VacationForm({ mode, initialValues, currentImage, submit
       {shownImage && (
         <img
           key={shownImage}
-          className="aspect-[16/10] w-full max-w-[320px] rounded-[10px] object-cover"
+          className="aspect-[16/10] w-full max-w-[320px] rounded-md object-cover"
           src={shownImage}
           alt={preview ? 'Preview of the selected image' : 'Current vacation image'}
           onError={(event) => {

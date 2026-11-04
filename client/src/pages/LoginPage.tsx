@@ -3,9 +3,10 @@ import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../api'
 import { useAuth } from '../auth/AuthContext'
+import AuthLayout from '../components/AuthLayout'
 import Field from '../components/Field'
 import { homePathFor } from '../components/RouteGuards'
-import { alert, authPanel, button, form, input, pageTitle } from '../styles'
+import { alert, button, form, input } from '../styles'
 import { validateEmail, validatePassword } from '../utils/format'
 
 export default function LoginPage() {
@@ -39,9 +40,10 @@ export default function LoginPage() {
   }
 
   return (
-    <section className={authPanel}>
-      <h1 className={pageTitle}>Welcome back</h1>
-      <p className="mt-1 text-muted">Log in to see your vacations.</p>
+    <AuthLayout
+      title="Welcome back"
+      intro="Log in to see your vacations."
+    >
       <form className={form} onSubmit={submit} noValidate>
         <Field id="email" label="Email" error={emailError}>
           <input
@@ -76,7 +78,7 @@ export default function LoginPage() {
         {formError && <p className={`${alert} mb-0`} role="alert">{formError}</p>}
         <button type="submit" className={`${button} w-full`} disabled={saving}>{saving ? 'Logging in…' : 'Log in'}</button>
       </form>
-      <p className="mt-4 text-center">New here? <Link to="/register" className="inline-block py-2.5 font-medium text-primary underline">Create an account</Link></p>
-    </section>
+      <p className="mt-4 text-center">New here? <Link to="/register" className="inline-block py-2.5 font-bold text-primary underline hover:text-primary-hover">Create an account</Link></p>
+    </AuthLayout>
   )
 }

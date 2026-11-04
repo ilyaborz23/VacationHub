@@ -2,23 +2,19 @@
 
 /* static keeps every color available as a CSS variable, the chart on the report page reads them */
 @theme static {
-  --font-sans: 'Rubik', 'Segoe UI', system-ui, Arial, sans-serif;
-  --color-primary: #0369a1;
-  --color-primary-hover: #075985;
-  --color-accent: #c2410c;
-  --color-background: #f0f9ff;
+  --font-sans: 'Lato', 'Rubik', 'Segoe UI', Arial, sans-serif;
+  --color-primary: #0b6e6e;
+  --color-primary-hover: #084f4f;
+  --color-background: #ffffff;
   --color-surface: #ffffff;
-  --color-ink: #0c4a6e;
-  --color-muted: #475569;
-  --color-line: #bae6fd;
-  --color-input-line: #64748b;
-  --color-tint: #e0f2fe;
-  --color-danger: #b91c1c;
-  --color-danger-hover: #991b1b;
-  --color-danger-tint: #fef2f2;
-  --color-like: #be123c;
-  --color-like-tint: #ffe4e6;
-  --shadow-card: 0 4px 16px rgb(12 74 110 / 10%);
+  --color-ink: #1f2933;
+  --color-muted: #52606d;
+  --color-line: #dfe3e6;
+  --color-input-line: #7b8794;
+  --color-tint: #eef3f3;
+  --color-danger: #b4232c;
+  --color-danger-hover: #8f1b22;
+  --color-danger-tint: #fdf0f0;
 }
 
 @layer base {
@@ -35,7 +31,7 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-ink);
+    outline: 3px solid var(--color-primary);
     outline-offset: 2px;
   }
 
